@@ -16,6 +16,16 @@ namespace SmartWMS
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = this;
+            //App.UserDB.GetAllUsers();
+
+            //var response = App.UserDB.Login("", "");
+
+            //App.UserDB.SaveUserAsyn(new Models.User()
+            //{
+            //    Password = "asd",
+            //    Username = "Abdullah",
+            //});
         }
     }
 }
