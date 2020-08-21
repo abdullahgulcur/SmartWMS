@@ -16,26 +16,39 @@ namespace SmartWMS.Repository
             _database.CreateTableAsync<User>().Wait();
         }
 
-        public Task<List<User>> GetAllUsers()
+        public Task<List<User>> GetUsersAsync()
         {
             return _database.Table<User>().ToListAsync();
         }
 
-        public Task<User> ReadUser(int id)
+        public Task<User> GetUserAsync(int id)
         {
             return _database.Table<User>().Where(p => p.UserId == id).FirstOrDefaultAsync();
         }
 
-        public Response Login(string username, string password)
+        public Task<int> SaveUserAsync(User user)
+        {
+            if (user.UserId != 0)
+                return _database.UpdateAsync(user);
+            else
+                return _database.InsertAsync(user);
+        }
+
+        public Task<int>DeleteUserAsync(User user)
+        {
+            return _database.DeleteAsync(user);
+        }
+
+        public Response LoginAsync(string username, string password)
         {
             Response response = new Response();
             var user = _database.Table<User>().Where(p => p.Username == username).FirstOrDefaultAsync().Result;
-            if(user == null)
+            if (user == null)
             {
                 response.Success = false;
                 response.ExceptionMessage = "Bu isimde bir kullanıcı bulunmamaktadır!";
             }
-            else if(user.Password == password)
+            else if (user.Password == password)
             {
                 response.Success = true;
             }
@@ -46,15 +59,10 @@ namespace SmartWMS.Repository
             }
 
             return response;
+
         }
 
-        public Task<int> SaveUserAsyn(User user)
-        {
-            if (user.UserId != 0)
-                return _database.UpdateAsync(user);
-            else
-                return _database.InsertAsync(user);
-        }
+
 
     }
 }

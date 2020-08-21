@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartWMS.SignUpView">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" Margin="20,10,20,10">
+            <Entry x:Name="NameEntry" Text="{Binding Name}" Placeholder="Name" TextChanged="NameEntry_TextChanged" Focused="NameEntry_Focused" />
+            <Label x:Name="NameLabel" Text="Please enter a name." TextColor="Red" Margin="5,0,0,0"/>
+
+            <Entry x:Name="SurmameEntry" Text="{Binding Surname}" Placeholder="Surname" TextChanged="SurmameEntry_TextChanged" Focused="SurmameEntry_Focused" />
+            <Label x:Name="SurnameLabel" Text="Please enter a surname." TextColor="Red" Margin="5,0,0,0"/>
+
+            <Entry x:Name="EmailEntry" Text="{Binding Email}" Placeholder="Email" TextChanged="EmailEntry_TextChanged" Focused="EmailEntry_Focused" />
+            <Label x:Name="EmailLabel" Text="Please enter an email." TextColor="Red" Margin="5,0,0,0"/>
+
+            <Entry x:Name="UsernameEntry" Text="{Binding Username}" Placeholder="Username" TextChanged="UsernameEntry_TextChanged" Focused="UsernameEntry_Focused" />
+            <Label x:Name="UsernameLabel" Text="Please enter a Username." TextColor="Red" Margin="5,0,0,0"/>
+
+            <Entry x:Name="PasswordEntry" Text="{Binding Password}" Placeholder="Password" TextChanged="PasswordEntry_TextChanged" Focused="PasswordEntry_Focused" IsPassword="true" />
+            <Label x:Name="PasswordLabel" Text="Please enter a password." TextColor="Red" Margin="5,0,0,0"/>
+
+            <Entry x:Name="ConfirmPasswordEntry" Text="{Binding ConfirmPassword}" Placeholder="Confirm password" TextChanged="ConfirmPasswordEntry_TextChanged" Focused="ConfirmPasswordEntry_Focused" IsPassword="true" />
+            <Label x:Name="ConfirmPasswordLabel"  TextColor="Red" Margin="5,0,0,0"/>
+
+            <Button Text="CREATE AN ACCOUNT" x:Name="createAccount" Clicked="createAccount_Clicked" 
+                    BackgroundColor="CornflowerBlue" CornerRadius="5" Margin="10,0,10,0"/>
+
+            <Label x:Name="AccountsLabel" Text="Accounts" HorizontalOptions="Center" FontSize="17" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="AccountsLabelTap" Tapped="AccountsLabelTap_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

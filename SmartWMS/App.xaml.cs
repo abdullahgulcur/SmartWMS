@@ -24,8 +24,8 @@ namespace SmartWMS
         public App()
         {
             InitializeComponent();
+            MainPage = new NavigationPage(new LoginView());
 
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()
