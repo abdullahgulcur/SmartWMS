@@ -1,12 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<MasterDetailPage
+     xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+            NavigationPage.HasNavigationBar="False"
              x:Class="SmartWMS.MainMenuView">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Main Menu"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    <MasterDetailPage.Master>
+        <ContentPage Title="test">
+            <ContentPage.Content>
+                <StackLayout>
+                    <Label Text="master" />
+                    <Button Text="Goods Receipt" Clicked="Button_Clicked" />
+                </StackLayout>
+            </ContentPage.Content>
+        </ContentPage>
+    </MasterDetailPage.Master>
+
+    <MasterDetailPage.Detail>
+           <NavigationPage>
+               <x:Arguments>
+                      <ContentPage Title="asd">
+                        <ContentPage.Content>
+                            <StackLayout>
+                                <Label Text="detay" />
+                            </StackLayout>
+                        </ContentPage.Content>
+                    </ContentPage>
+               </x:Arguments>
+           </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

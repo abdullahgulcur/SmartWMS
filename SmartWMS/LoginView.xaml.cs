@@ -51,7 +51,7 @@ namespace SmartWMS
             if (response.Success)
             {
                 MainMenuView view = new MainMenuView();
-                Navigation.PushAsync(view);
+                await Navigation.PushAsync(view);
             }
             else
                 await DisplayAlert("Warning", "The username or password you entered is incorrect", "OK");

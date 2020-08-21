@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Repository\" />
+    <Folder Include="OperationViews\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="LoginView.xaml">
@@ -43,5 +44,13 @@
     <EmbeddedResource Update="UserView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MainPageMenu.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="OperationViews\GoodsReceiptView.xaml.cs">
+      <DependentUpon>GoodsReceiptView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

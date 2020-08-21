@@ -1,8 +1,7 @@
-﻿using System;
-using SQLite;
-using SmartWMS.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartWMS.Models;
+using SQLite;
 
 namespace SmartWMS.Repository
 {
@@ -21,7 +20,7 @@ namespace SmartWMS.Repository
             return _database.Table<User>().ToListAsync();
         }
 
-        public Task<User> GetUserAsync(int id)
+        public Task<User> ReadUserAsync(int id)
         {
             return _database.Table<User>().Where(p => p.UserId == id).FirstOrDefaultAsync();
         }
@@ -61,8 +60,5 @@ namespace SmartWMS.Repository
             return response;
 
         }
-
-
-
     }
 }
