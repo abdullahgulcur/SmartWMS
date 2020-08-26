@@ -5,7 +5,7 @@ namespace SmartWMS.Models
     public class StorageLocation // Adres 
     {
         [PrimaryKey, AutoIncrement]
-        public int StorageLocaitonId { get; set; }
+        public int StorageLocationId { get; set; }
         public string StorageLocationBarcode { get; set; }
     }
 }

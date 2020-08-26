@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartWMS.Models;
 using SmartWMS.OperationViews;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,16 +13,89 @@ namespace SmartWMS
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainMenuView : MasterDetailPage
     {
-        List<SmartWMSPage> pages = new List<SmartWMSPage>();
+        #region
+
+        private string username;
+        public string Username
+        {
+            get => username;
+            set
+            {
+                username = value;
+                OnPropertyChanged(nameof(Username));
+            }
+        }
+
+        private SmartWMSPage selectedPage;
+        public SmartWMSPage SelectedPage
+        {
+            get => selectedPage;
+            set
+            {
+                selectedPage = value;
+                OnPropertyChanged(nameof(SelectedPage));
+            }
+        }
+
+        private List<SmartWMSPage> pages;
+        public List<SmartWMSPage> Pages
+        {
+            get => pages;
+            set
+            {
+                pages = value;
+                OnPropertyChanged(nameof(Pages));
+            }
+        }
+
+        #endregion
+
+        private ISpeechToText _speechRecongnitionInstance;
+
 
         public MainMenuView()
         {
-            pages.Add(new SmartWMSPage("Ürün Alım", typeof(GoodsReceiptView)));
+            Pages = new List<SmartWMSPage>();
+
+            Pages.Add(new SmartWMSPage("Ürün Alım", typeof(GoodsReceiptView)));
+            Pages.Add(new SmartWMSPage("Depolama Görevleri", typeof(StorageTaskView)));
+            Pages.Add(new SmartWMSPage("Toplama", typeof(PickingView)));
+            Pages.Add(new SmartWMSPage("Yük Arabası Turu", typeof(TrolleyTourView)));
+            Pages.Add(new SmartWMSPage("Yükleme", typeof(LoadingView)));
+            Pages.Add(new SmartWMSPage("Sevk", typeof(DispatchingView)));
+            Pages.Add(new SmartWMSPage("Stok İşlemleri", typeof(StockOperationsView)));
+            Pages.Add(new SmartWMSPage("Denetim Sayım", typeof(CycleCountView)));
 
             InitializeComponent();
+
+            try
+            {
+                _speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
+            }
+            catch (Exception ex)
+            {
+                recon.Text = ex.Message;
+            }
+
+            MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
+            {
+                SpeechToTextFinalResultRecieved(args);
+            });
+
+            MessagingCenter.Subscribe<ISpeechToText>(this, "Final", (sender) =>
+            {
+                start.IsEnabled = true;
+            });
+
+            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            {
+                SpeechToTextFinalResultRecieved(args);
+            });
+
             BindingContext = this;
         }
 
+        /*
         void Button_Clicked(System.Object sender, System.EventArgs e)
         {
             var selectedItem = pages.FirstOrDefault();
@@ -29,18 +103,115 @@ namespace SmartWMS
             var view = Activator.CreateInstance(selectedItem.OperationView);
             //GoodsReceiptView view1 = new GoodsReceiptView();
             Navigation.PushAsync(view as ContentPage);
-        }
-    }
+        }*/
 
-    public class SmartWMSPage
-    {
-        public string ViewName { get; set; }
-        public Type OperationView { get; set; }
-
-        public SmartWMSPage(string viewName, Type operationPage)
+        /*
+        private void OpenPage(string name)
         {
-            ViewName = viewName;
-            OperationView = operationPage;
+            if(Pages.Where(p => p.ViewName.Contains(name)).Any())
+            {
+                var page = pages.Where(p => p.ViewName.Contains(name)).FirstOrDefault();
+            }
+            
+        }*/
+
+        private void SmartWMSPageList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if(SelectedPage.ViewName.Equals("Ürün Alım"))
+                Detail = new NavigationPage(new GoodsReceiptView());
+            else if(SelectedPage.ViewName.Equals("Depolama Görevleri"))
+                Detail = new NavigationPage(new StorageTaskView());
+            else if (SelectedPage.ViewName.Equals("Toplama"))
+                Detail = new NavigationPage(new PickingView());
+            else if (SelectedPage.ViewName.Equals("Yük Arabası Turu"))
+                Detail = new NavigationPage(new TrolleyTourView());
+            else if (SelectedPage.ViewName.Equals("Yükleme"))
+                Detail = new NavigationPage(new LoadingView());
+            else if (SelectedPage.ViewName.Equals("Sevk"))
+                Detail = new NavigationPage(new DispatchingView());
+            else if (SelectedPage.ViewName.Equals("Stok İşlemleri"))
+                Detail = new NavigationPage(new StockOperationsView());
+            else if (SelectedPage.ViewName.Equals("Denetim Sayım"))
+                Detail = new NavigationPage(new CycleCountView());
+
+            IsPresented = false;
+        }
+
+        private void SpeechToTextFinalResultRecieved(string args)
+        {
+            recon.Text = args;
+
+            int minDistance = 99999;
+            int index = 0;
+
+
+            // LevenshteinDistance is a useful static class that allows us to find similarity between strings
+            // In this loop we try to find appropriate string in master page with user voice input
+            for (int i = 0; i < Pages.Count; i++)
+            {
+                if (LevenshteinDistance.Compute(args, Pages[i].ViewName) < minDistance)
+                {
+                    minDistance = LevenshteinDistance.Compute(args, Pages[i].ViewName);
+                    index = i;
+                }
+            }
+            switch (index)
+            {
+                case 0:
+                    Detail = new NavigationPage(new GoodsReceiptView());
+                    break;
+                case 1:
+                    Detail = new NavigationPage(new StorageTaskView());
+                    break;
+                case 2:
+                    Detail = new NavigationPage(new PickingView());
+                    break;
+                case 3:
+                    Detail = new NavigationPage(new TrolleyTourView());
+                    break;
+                case 4:
+                    Detail = new NavigationPage(new LoadingView());
+                    break;
+                case 5:
+                    Detail = new NavigationPage(new DispatchingView());
+                    break;
+                case 6:
+                    Detail = new NavigationPage(new StockOperationsView());
+                    break;
+                case 7:
+                    Detail = new NavigationPage(new CycleCountView());
+                    break;
+
+            }
+            IsPresented = false;
+        }
+
+        private void start_Clicked(object sender, EventArgs e)
+        {
+            StartRecording();
+        }
+
+        private void ButtonMicrophone_Clicked(object sender, EventArgs e)
+        {
+            StartRecording();
+        }
+
+        private void StartRecording()
+        {
+            try
+            {
+                _speechRecongnitionInstance.StartSpeechToText();
+            }
+            catch (Exception ex)
+            {
+                recon.Text = ex.Message;
+            }
+
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                start.IsEnabled = false;
+            }
         }
     }
+
 }

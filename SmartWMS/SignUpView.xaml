@@ -4,22 +4,28 @@
              x:Class="SmartWMS.SignUpView">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" Margin="20,10,20,10">
-            <Entry x:Name="NameEntry" Text="{Binding Name}" Placeholder="Name" TextChanged="NameEntry_TextChanged" Focused="NameEntry_Focused" />
+            <Entry x:Name="NameEntry" Text="{Binding Name}" Placeholder="Name" TextChanged="NameEntry_TextChanged" Focused="NameEntry_Focused" 
+                   Completed="NameEntry_Completed"/>
             <Label x:Name="NameLabel" Text="Please enter a name." TextColor="Red" Margin="5,0,0,0"/>
 
-            <Entry x:Name="SurmameEntry" Text="{Binding Surname}" Placeholder="Surname" TextChanged="SurmameEntry_TextChanged" Focused="SurmameEntry_Focused" />
+            <Entry x:Name="SurmameEntry" Text="{Binding Surname}" Placeholder="Surname" TextChanged="SurnameEntry_TextChanged" Focused="SurnameEntry_Focused" 
+                   Completed="SurnameEntry_Completed"/>
             <Label x:Name="SurnameLabel" Text="Please enter a surname." TextColor="Red" Margin="5,0,0,0"/>
 
-            <Entry x:Name="EmailEntry" Text="{Binding Email}" Placeholder="Email" TextChanged="EmailEntry_TextChanged" Focused="EmailEntry_Focused" />
+            <Entry x:Name="EmailEntry" Text="{Binding Email}" Placeholder="Email" TextChanged="EmailEntry_TextChanged" Focused="EmailEntry_Focused" 
+                   Completed="EmailEntry_Completed"/>
             <Label x:Name="EmailLabel" Text="Please enter an email." TextColor="Red" Margin="5,0,0,0"/>
 
-            <Entry x:Name="UsernameEntry" Text="{Binding Username}" Placeholder="Username" TextChanged="UsernameEntry_TextChanged" Focused="UsernameEntry_Focused" />
+            <Entry x:Name="UsernameEntry" Text="{Binding Username}" Placeholder="Username" TextChanged="UsernameEntry_TextChanged" Focused="UsernameEntry_Focused" 
+                   Completed="UsernameEntry_Completed"/>
             <Label x:Name="UsernameLabel" Text="Please enter a Username." TextColor="Red" Margin="5,0,0,0"/>
 
-            <Entry x:Name="PasswordEntry" Text="{Binding Password}" Placeholder="Password" TextChanged="PasswordEntry_TextChanged" Focused="PasswordEntry_Focused" IsPassword="true" />
+            <Entry x:Name="PasswordEntry" Text="{Binding Password}" Placeholder="Password" TextChanged="PasswordEntry_TextChanged" Focused="PasswordEntry_Focused" 
+                   IsPassword="true" Completed="PasswordEntry_Completed"/>
             <Label x:Name="PasswordLabel" Text="Please enter a password." TextColor="Red" Margin="5,0,0,0"/>
 
-            <Entry x:Name="ConfirmPasswordEntry" Text="{Binding ConfirmPassword}" Placeholder="Confirm password" TextChanged="ConfirmPasswordEntry_TextChanged" Focused="ConfirmPasswordEntry_Focused" IsPassword="true" />
+            <Entry x:Name="ConfirmPasswordEntry" Text="{Binding ConfirmPassword}" Placeholder="Confirm password" TextChanged="ConfirmPasswordEntry_TextChanged"
+                   Focused="ConfirmPasswordEntry_Focused" IsPassword="true" Completed="ConfirmPasswordEntry_Completed"/>
             <Label x:Name="ConfirmPasswordLabel"  TextColor="Red" Margin="5,0,0,0"/>
 
             <Button Text="CREATE AN ACCOUNT" x:Name="createAccount" Clicked="createAccount_Clicked" 

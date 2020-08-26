@@ -4,31 +4,92 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:SmartWMS"
             mc:Ignorable="d"
             NavigationPage.HasNavigationBar="False"
-             x:Class="SmartWMS.MainMenuView">
+            x:Class="SmartWMS.MainMenuView">
+
+    
     <MasterDetailPage.Master>
         <ContentPage Title="test">
             <ContentPage.Content>
-                <StackLayout>
-                    <Label Text="master" />
-                    <Button Text="Goods Receipt" Clicked="Button_Clicked" />
-                </StackLayout>
+
+                <Grid RowSpacing="0" ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="0.2*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="{local:ImageResource SmartWMS.Images.gradient.jpg}" Grid.ColumnSpan="2" Aspect="AspectFill"/>
+
+
+                    <Image Source="{local:ImageResource SmartWMS.Images.icon_forklift_1.png}" Margin="15,50,50,50"/>
+
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2" RowSpacing="0" ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Image x:Name="ButtonMicrophone" Source="{local:ImageResource SmartWMS.Images.microphone.png}"
+                    Grid.Column="1" Margin="15,15,15,15">
+                            <!---
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ButtonMicrophone_Clicked" NumberOfTapsRequired="1" />
+                            </Image.GestureRecognizers>
+                            -->
+                        </Image>
+                        
+                        <BoxView Color="Transparent" Grid.Column="1">
+                            <BoxView.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ButtonMicrophone_Clicked" NumberOfTapsRequired="1"/>
+                            </BoxView.GestureRecognizers>
+                        </BoxView>
+                        
+                        
+                    </Grid>
+
+                    <Label Text="{Binding Username}" />
+
+                    <StackLayout Grid.Row="2" Grid.ColumnSpan="2" >
+                        <ListView x:Name="SmartWMSPageList" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage}" ItemSelected="SmartWMSPageList_ItemSelected" 
+                        RowHeight="50" SeparatorVisibility="Default" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Text="{Binding ViewName}" TextColor="Black"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+
+                </Grid>
+
+                
             </ContentPage.Content>
         </ContentPage>
     </MasterDetailPage.Master>
 
     <MasterDetailPage.Detail>
-           <NavigationPage>
-               <x:Arguments>
-                      <ContentPage Title="asd">
-                        <ContentPage.Content>
-                            <StackLayout>
-                                <Label Text="detay" />
-                            </StackLayout>
-                        </ContentPage.Content>
-                    </ContentPage>
-               </x:Arguments>
-           </NavigationPage>
+        <NavigationPage>
+            <x:Arguments>
+                <ContentPage Title="asd">
+                    <ContentPage.Content>
+                        <StackLayout>
+                            <Button x:Name="start" Text="Start" Clicked="start_Clicked"/>
+                            <Label x:Name="recon" Text="Recognized text" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ContentPage.Content>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
     </MasterDetailPage.Detail>
 </MasterDetailPage>

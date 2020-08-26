@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SmartWMS"
+             x:Class="SmartWMS.Temporary">
+    <ContentPage.Content>
+
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Image Source="{local:ImageResource SmartWMS.Images.gradient.jpg}" Grid.ColumnSpan="2" Aspect="AspectFill"/>
+
+            
+            <!--Clicked="ButtonMicrophone_Clicked"-->
+
+            <Image Source="{local:ImageResource SmartWMS.Images.icon_forklift_1.png}" Margin="15,50,50,50"/>
+
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2" RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <BoxView Color="Red" Grid.Column="1">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ButtonMicrophone_Clicked" NumberOfTapsRequired="1"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+
+                <Image x:Name="ButtonMicrophone" Source="{local:ImageResource SmartWMS.Images.microphone.png}"
+                    Grid.Column="1" Margin="15,15,15,15">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ButtonMicrophone_Clicked" NumberOfTapsRequired="1" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+
+
+            <!--
+            <Label Text="{Binding Username}" />
+
+            <StackLayout Grid.Row="2" Grid.ColumnSpan="2" >
+                <ListView x:Name="SmartWMSPageList" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage}" ItemSelected="SmartWMSPageList_ItemSelected" 
+                        RowHeight="50" SeparatorVisibility="Default" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding ViewName}" TextColor="Black"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            -->
+        </Grid>
+
+
+    </ContentPage.Content>
+</ContentPage>

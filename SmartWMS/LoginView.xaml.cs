@@ -44,17 +44,9 @@ namespace SmartWMS
             BindingContext = this;
         }
 
-        private async void Login_Clicked(object sender, EventArgs e)
+        private void Login_Clicked(object sender, EventArgs e)
         {
-            Response response = App.UserDB.LoginAsync(Username, Password);
-
-            if (response.Success)
-            {
-                MainMenuView view = new MainMenuView();
-                await Navigation.PushAsync(view);
-            }
-            else
-                await DisplayAlert("Warning", "The username or password you entered is incorrect", "OK");
+            Login();
         }
 
         private void SignUpLabelTap_Tapped(object sender, EventArgs e)
@@ -78,6 +70,39 @@ namespace SmartWMS
                 LoginButton.IsEnabled = false;
             else
                 LoginButton.IsEnabled = true;
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            Switch sw = (Switch)sender;
+            if (!sw.IsToggled)
+                PasswordEntry.IsPassword = true;
+            else
+                PasswordEntry.IsPassword = false;
+
+        }
+
+        private void UsernameEntry_Completed(object sender, EventArgs e)
+        {
+            PasswordEntry.Focus();
+        }
+
+        private void PasswordEntry_Completed(object sender, EventArgs e)
+        {
+            Login();
+        }
+
+        public async void Login()
+        {
+            Response response = App.UserDB.LoginAsync(Username, Password);
+
+            if (response.Success)
+            {
+                MainMenuView view = new MainMenuView();
+                await Navigation.PushAsync(view);
+            }
+            else
+                await DisplayAlert("Warning", "The username or password you entered is incorrect", "OK");
         }
     }
 }

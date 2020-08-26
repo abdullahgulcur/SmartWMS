@@ -11,11 +11,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\gradient.jpg" />
+    <None Remove="Images\gradient_1.jpg" />
+    <None Remove="Images\icon_forklift.png" />
+    <None Remove="Images\icon_forklift_1.png" />
+    <None Remove="Images\icon_microphone.png" />
     <None Remove="Images\image_logo.png" />
+    <None Remove="Images\microphone.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Images\gradient.jpg" />
+    <EmbeddedResource Include="Images\gradient_1.jpg" />
+    <EmbeddedResource Include="Images\icon_forklift.png" />
+    <EmbeddedResource Include="Images\icon_forklift_1.png" />
+    <EmbeddedResource Include="Images\icon_microphone.png" />
     <EmbeddedResource Include="Images\image_logo.png" />
+    <EmbeddedResource Include="Images\microphone.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,18 +36,37 @@
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Repository\" />
-    <Folder Include="OperationViews\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="LoginView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MainMenuView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\CycleCountView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\DispatchingView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\LoadingView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\PickingView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\StockOperationsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\StorageTaskView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OperationViews\TrolleyTourView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="SignUpView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Temporary.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UserListView.xaml">

@@ -10,8 +10,23 @@
 
             <Frame HasShadow="False" BackgroundColor="Transparent"/>
 
-            <Entry x:Name="UsernameEntry" Placeholder="Username" Text="{Binding Username}" HorizontalTextAlignment="Center" TextChanged="UsernameEntry_TextChanged"  Margin="15,0,15,0"/>
-            <Entry x:Name="PasswordEntry" Placeholder="Password" Text="{Binding Password}" HorizontalTextAlignment="Center" TextChanged="PasswordEntry_TextChanged" IsPassword="true" Margin="15,0,15,0"/>
+            
+            <Entry x:Name="UsernameEntry" Placeholder="Username" Text="{Binding Username}"  TextChanged="UsernameEntry_TextChanged" 
+                   Completed="UsernameEntry_Completed" Margin="15,0,15,0"/>
+
+            <Grid RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.3*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Entry x:Name="PasswordEntry" Placeholder="Password" Text="{Binding Password}" TextChanged="PasswordEntry_TextChanged" 
+                       IsPassword="true" Margin="15,0,0,0" Completed="PasswordEntry_Completed"/>
+                <Switch Grid.Column="1" IsToggled="false" HorizontalOptions="Center" VerticalOptions="Center" Margin="0" Toggled="Switch_Toggled"/>
+            </Grid>
+
 
             <Button x:Name="LoginButton" VerticalOptions="Center" Text="Login" Clicked="Login_Clicked" IsEnabled="False"
                     BackgroundColor="CornflowerBlue" CornerRadius="5" Margin="10,0,10,0"/>
