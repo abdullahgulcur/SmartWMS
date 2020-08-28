@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartWMS.Views.StorageLocationDetailView">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="ITEMS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+
+            <ListView x:Name="ItemList" ItemsSource="{Binding Items}" RowHeight="25">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition Width="0.3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding ItemId}" FontSize="10" VerticalOptions="Center" HorizontalOptions="Center" />
+                                <Label Text="{Binding ItemBarcode}" Grid.Column="1" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                                <Label Text="{Binding ItemName}" Grid.Column="2" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -81,11 +81,73 @@
     <MasterDetailPage.Detail>
         <NavigationPage>
             <x:Arguments>
-                <ContentPage Title="asd">
+                <ContentPage Title="Tables">
                     <ContentPage.Content>
                         <StackLayout>
+                            <!-- 
                             <Button x:Name="start" Text="Start" Clicked="start_Clicked"/>
                             <Label x:Name="recon" Text="Recognized text" HorizontalOptions="Center" VerticalOptions="Center" />
+                            
+                            <ListView x:Name="StorageLocationsList" ItemsSource="{Binding StorageLocations}">
+
+                            </ListView>
+                            -->
+                            
+
+                            <!-- THIS PART IS FOR STORAGE LOCATION TABLE -->
+
+                            <Label Text="STORAGE LOCATIONS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+
+                            <ListView x:Name="LocationList" ItemsSource="{Binding StorageLocations}" RowHeight="40" SelectedItem="{Binding SelectedLocation}" ItemSelected="LocationList_ItemSelected" >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.2*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Label Text="{Binding StorageLocationId}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center" />
+                                                <Label Text="{Binding StorageLocationBarcode}" Grid.Column="1" FontSize="15" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            </Grid>
+
+
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+
+                            <!-- THIS PART IS FOR ITEM TABLE 
+
+                            <Label Text="ITEMS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+
+                            <ListView ItemsSource="{Binding Items}" RowHeight="25">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.1*" />
+                                                    <ColumnDefinition Width="0.3*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Label Text="{Binding ItemId}" FontSize="10" VerticalOptions="Center" HorizontalOptions="Center" />
+                                                <Label Text="{Binding ItemBarcode}" Grid.Column="1" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                                                <Label Text="{Binding ItemName}" Grid.Column="2" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+-->
                         </StackLayout>
                     </ContentPage.Content>
                 </ContentPage>

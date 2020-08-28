@@ -1,12 +1,24 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
+using System.Collections.Generic;
 
 namespace SmartWMS.Models
 {
+    [Table("StorageLocations")]
     public class StorageLocation // Adres 
     {
         [PrimaryKey, AutoIncrement]
         public int StorageLocationId { get; set; }
+
         public string StorageLocationBarcode { get; set; }
+
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Item> Items { get; set; }
+
+        public override string ToString()
+        {
+            return StorageLocationId + " " + StorageLocationBarcode;
+        }
     }
 }
 

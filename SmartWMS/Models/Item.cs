@@ -1,12 +1,27 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
+
 namespace SmartWMS.Models
 {
+    [Table("Items")]
+
     public class Item
     {
         [PrimaryKey, AutoIncrement]
         public int ItemId { get; set; }
-        public string ItemBarcode { get; set; } 
+        public string ItemBarcode { get; set; }
         public string ItemName { get; set; }
+
+        [ForeignKey(typeof(StorageLocation))]
+        public int StorageLocationId { get; set; }
+
+        [ManyToOne] 
+        public StorageLocation StorageLocation { get; set; }
+
+        public override string ToString()
+        {
+            return ItemId + " " + ItemBarcode + " " + ItemName;
+        }
     }
 }
 

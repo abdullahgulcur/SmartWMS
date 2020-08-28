@@ -7,6 +7,8 @@ using SmartWMS.Models;
 using SmartWMS.OperationViews;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SmartWMS.Views;
+using SmartWMS.Repository;
 
 namespace SmartWMS
 {
@@ -14,6 +16,39 @@ namespace SmartWMS
     public partial class MainMenuView : MasterDetailPage
     {
         #region
+
+        private List<StorageLocation> storageLocations;
+        public List<StorageLocation> StorageLocations
+        {
+            get => storageLocations;
+            set
+            {
+                storageLocations = value;
+                OnPropertyChanged(nameof(StorageLocations));
+            }
+        }
+
+        private List<Item> items;
+        public List<Item> Items
+        {
+            get => items;
+            set
+            {
+                items = value;
+                OnPropertyChanged(nameof(Items));
+            }
+        }
+
+        private StorageLocation selectedLocation;
+        public StorageLocation SelectedLocation
+        {
+            get => selectedLocation;
+            set
+            {
+                selectedLocation = value;
+                OnPropertyChanged(nameof(SelectedLocation));
+            }
+        }
 
         private string username;
         public string Username
@@ -52,9 +87,15 @@ namespace SmartWMS
 
         private ISpeechToText _speechRecongnitionInstance;
 
+        public async void ListAllStorageLocations()
+        {
+            StorageLocations = await App.StorageRepository.GetAllLocations();
+            Items = await App.StorageRepository.GetAllItems();
+        }
 
         public MainMenuView()
         {
+
             Pages = new List<SmartWMSPage>();
 
             Pages.Add(new SmartWMSPage("Ürün Alım", typeof(GoodsReceiptView)));
@@ -74,7 +115,7 @@ namespace SmartWMS
             }
             catch (Exception ex)
             {
-                recon.Text = ex.Message;
+                //recon.Text = ex.Message;
             }
 
             MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
@@ -84,7 +125,7 @@ namespace SmartWMS
 
             MessagingCenter.Subscribe<ISpeechToText>(this, "Final", (sender) =>
             {
-                start.IsEnabled = true;
+                //start.IsEnabled = true;
             });
 
             MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
@@ -93,6 +134,9 @@ namespace SmartWMS
             });
 
             BindingContext = this;
+
+            ListAllStorageLocations();
+
         }
 
         /*
@@ -139,7 +183,7 @@ namespace SmartWMS
 
         private void SpeechToTextFinalResultRecieved(string args)
         {
-            recon.Text = args;
+            //recon.Text = args;
 
             int minDistance = 99999;
             int index = 0;
@@ -204,13 +248,20 @@ namespace SmartWMS
             }
             catch (Exception ex)
             {
-                recon.Text = ex.Message;
+                //recon.Text = ex.Message;
             }
 
             if (Device.RuntimePlatform == Device.iOS)
             {
-                start.IsEnabled = false;
+                //start.IsEnabled = false;
             }
+        }
+
+        private void LocationList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            StorageLocationDetailView view = new StorageLocationDetailView(SelectedLocation);
+            Navigation.PushAsync(view);
+
         }
     }
 
