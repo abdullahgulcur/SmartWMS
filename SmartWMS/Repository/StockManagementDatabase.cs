@@ -6,7 +6,7 @@ using SQLite;
 
 namespace SmartWMS.Repository
 {
-    public class StorageLocationRepository
+    public class StockManagementDatabase
     {
         /*
          * All Methods run perfectly...
@@ -15,12 +15,14 @@ namespace SmartWMS.Repository
          */
 
         readonly SQLiteAsyncConnection _database;
-        public StorageLocationRepository(string dbPath)
+        public StockManagementDatabase(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
 
             _database.CreateTableAsync<StorageLocation>().Wait();
             _database.CreateTableAsync<Item>().Wait();
+            _database.CreateTableAsync<Stock>().Wait();
+
         }
 
         /* STORAGE LOCATIONS PART */
@@ -48,6 +50,7 @@ namespace SmartWMS.Repository
                 return _database.InsertAsync(location);
         }
 
+        /*
         public Task<int> SaveStorageLocationWithItemAsync(StorageLocation location)
         {
             if (location.StorageLocationId != 0)
@@ -63,7 +66,7 @@ namespace SmartWMS.Repository
             else
                 return _database.InsertAsync(location);
 
-        }
+        }*/
 
         public Task<int> DeleteStorageLocationAsync(StorageLocation location)
         {
@@ -79,7 +82,7 @@ namespace SmartWMS.Repository
          *  This is a new method for adding locations to location repository
          *  If location is not found in repo, then add it.
          */
-        public async void SaveUniqueLocationAsync(StorageLocation location)
+        public async Task SaveUniqueLocationAsync(StorageLocation location)
         {
             var locationToBeCreated = _database.Table<StorageLocation>().Where(p => p.StorageLocationBarcode == location.StorageLocationBarcode).FirstOrDefaultAsync().Result;
 
@@ -128,7 +131,7 @@ namespace SmartWMS.Repository
          *  This is a new method for adding unique item to table
          *  If item is not found in repo, then add it.
          */
-        public async void SaveUniqueItemAsync(Item item)
+        public async Task SaveUniqueItemAsync(Item item)
         {
            
             var itemToBeCreated = _database.Table<Item>().Where(p => p.ItemBarcode == item.ItemBarcode).FirstOrDefaultAsync().Result;
@@ -137,9 +140,38 @@ namespace SmartWMS.Repository
                 await SaveItemAsync(item);
         }
 
-        public void UpdateLocationWithItem(StorageLocation storageLocation)
+
+
+        /* STOCK UNITS PART */
+
+        public Task<List<Stock>> GetStockUnitsAsync()
         {
+            return _database.Table<Stock>().ToListAsync();
+        }
+
+        public Task<Stock> ReadStockUnitAsync(int id)
+        {
+            return _database.Table<Stock>().Where(p => p.StockId == id).FirstOrDefaultAsync();
+        }
+
+        public Task<int> SaveStockUnitAsync(Stock stock)
+        {
+            if (stock.StockId != 0)
+                return _database.UpdateAsync(stock);
+            else
+                return _database.InsertAsync(stock);
 
         }
+
+        public Task<int> DeleteStockUnitAsync(Stock stock)
+        {
+            return _database.DeleteAsync(stock);
+        }
+
+        public void DropStockUnitTable()
+        {
+            _database.DropTableAsync<Stock>().Wait();
+        }
+
     }
 }

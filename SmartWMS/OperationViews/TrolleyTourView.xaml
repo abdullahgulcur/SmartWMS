@@ -1,10 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartWMS.OperationViews.TrolleyTourView">
+             x:Class="SmartWMS.OperationViews.TrolleyTourView"
+             xmlns:local="clr-namespace:SmartWMS"
+             Title="TROLLEY TOUR">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Trolley Tour" />
-        </StackLayout>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*" />
+                <ColumnDefinition Width="0.35*" />
+                <ColumnDefinition Width="0.35*" />
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.07*" />
+                <RowDefinition Height="0.05*" />
+                <RowDefinition Height="0.38*" />
+                <RowDefinition Height="0.07*" />
+                <RowDefinition Height="0.05*" />
+                <RowDefinition Height="0.05*" />
+                <RowDefinition Height="0.20*" />
+                <RowDefinition Height="0.13*" />
+
+
+            </Grid.RowDefinitions>
+
+            <!--  
+                <Label Text="STOCK UNITS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="15" Grid.ColumnSpan="4" />
+                -->
+
+            <Button x:Name="RequestItemsButton" Text="REQUEST STOCK UNITS" Clicked="RequestItemsButton_Clicked" Grid.Row="0" Grid.ColumnSpan="4"/>
+
+            <Label Text="ID" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="1" />
+            <Label Text="ITEM BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="1" />
+            <Label Text="LOCATION BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="2" Grid.Row="1" />
+            <Label Text="COUNT" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="1" />
+
+
+            <ListView ItemsSource="{Binding Stocks}" RowHeight="30" Grid.ColumnSpan="4" Grid.Row="2" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*" />
+                                    <ColumnDefinition Width="0.35*" />
+                                    <ColumnDefinition Width="0.35*" />
+                                    <ColumnDefinition Width="0.2*" />
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Id}" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                                <Label Text="{Binding Barcode}" Grid.Column="1" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                                <Label Text="{Binding Location}" Grid.Column="2" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+                                <Label Text="{Binding Count}" Grid.Column="3" FontSize="12" VerticalOptions="Center" HorizontalOptions="Center" />
+
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button x:Name="PickButton" Text="START PICKING" Clicked="PickButton_Clicked" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="4"/>
+            
+            <Label x:Name="LabelId" Text="ID" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="4" IsVisible="False" />
+            <Label x:Name="LabelItemBarcode" Text="ITEM BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="4" IsVisible="False"  />
+            <Label x:Name="LabelLocationBarcode" Text="LOCATION BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="2" Grid.Row="4" IsVisible="False"  />
+            <Label x:Name="LabelCount" Text="COUNT" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="4" IsVisible="False"  />
+
+            <Label x:Name="LabelCurrentStockId" Text="{Binding CurrentStockId}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="0" Grid.Row="5" IsVisible="False"/>
+            <Label x:Name="LabelCurrentStockItemBarcode" Text="{Binding CurrentStockItemBarcode}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="1" Grid.Row="5" IsVisible="False"/>
+            <Label x:Name="LabelCurrentStockLocationBarcode" Text="{Binding CurrentStockLocationBarcode}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="2" Grid.Row="5" IsVisible="False"/>
+            <Label x:Name="LabelCurrentStockCount" Text="{Binding CurrentStockCount}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="3" Grid.Row="5" IsVisible="False"/>
+
+
+            <Image x:Name="ButtonMicrophone" Source="{local:ImageResource SmartWMS.Images.microphone.png}" Grid.Row="7" Grid.Column="3" Margin="8,8,8,8">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Microphone_Tapped" NumberOfTapsRequired="1"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+        </Grid>
+
+
     </ContentPage.Content>
 </ContentPage>

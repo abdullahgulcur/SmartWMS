@@ -56,7 +56,8 @@ namespace SmartWMS.Repository
 
         public Task<bool> DeleteLocationWithBarcode(string barcode)
         {
-            var locationToBeDeleted = connection.GetAllWithChildren<StorageLocation>().Where(p => p.StorageLocationBarcode == barcode).FirstOrDefault();
+            var locationToBeDeleted = connection.GetAllWithChildren<StorageLocation>()
+                .Where(p => p.StorageLocationBarcode == barcode).FirstOrDefault();
             connection.Delete(locationToBeDeleted);
 
             return Task.FromResult(true);
@@ -72,7 +73,8 @@ namespace SmartWMS.Repository
 
         public Task<bool> AddLocation(StorageLocation location)
         {
-            StorageLocation locationToBeCreated = connection.GetAllWithChildren<StorageLocation>().Where(p => p.StorageLocationBarcode == location.StorageLocationBarcode).FirstOrDefault();
+            StorageLocation locationToBeCreated = connection.GetAllWithChildren<StorageLocation>()
+                .Where(p => p.StorageLocationBarcode == location.StorageLocationBarcode).FirstOrDefault();
 
             if (locationToBeCreated == null)
                 connection.Insert(location);
@@ -82,7 +84,8 @@ namespace SmartWMS.Repository
 
         public Task<bool> AddItem(Item item)
         {
-            Item itemToBeCreated = connection.GetAllWithChildren<Item>().Where(p => p.ItemBarcode == item.ItemBarcode).FirstOrDefault();
+            Item itemToBeCreated = connection.GetAllWithChildren<Item>()
+                .Where(p => p.ItemBarcode == item.ItemBarcode).FirstOrDefault();
 
             if(itemToBeCreated == null)
                 connection.Insert(item);

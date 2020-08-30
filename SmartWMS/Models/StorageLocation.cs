@@ -12,13 +12,12 @@ namespace SmartWMS.Models
 
         public string StorageLocationBarcode { get; set; }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Item> Items { get; set; }
-
+        /*
         public override string ToString()
         {
             return StorageLocationId + " " + StorageLocationBarcode;
         }
+        */
     }
 }
 

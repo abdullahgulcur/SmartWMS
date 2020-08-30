@@ -17,6 +17,7 @@ namespace SmartWMS
     {
         #region
 
+        /*
         private List<StorageLocation> storageLocations;
         public List<StorageLocation> StorageLocations
         {
@@ -49,7 +50,7 @@ namespace SmartWMS
                 OnPropertyChanged(nameof(SelectedLocation));
             }
         }
-
+        */
         private string username;
         public string Username
         {
@@ -87,17 +88,19 @@ namespace SmartWMS
 
         private ISpeechToText _speechRecongnitionInstance;
 
-        public async void ListAllStorageLocations()
+        /*
+        private async void ListAllStorageLocations()
         {
-            StorageLocations = await App.StorageRepository.GetAllLocations();
-            Items = await App.StorageRepository.GetAllItems();
+            StorageLocations = await App.StockManagementDB.GetStorageLocationsAsync();
+            Items = await App.StockManagementDB.GetItemsAsync();
         }
-
+        */
         public MainMenuView()
         {
 
             Pages = new List<SmartWMSPage>();
 
+            Pages.Add(new SmartWMSPage("Tablolar", typeof(TablesView)));
             Pages.Add(new SmartWMSPage("Ürün Alım", typeof(GoodsReceiptView)));
             Pages.Add(new SmartWMSPage("Depolama Görevleri", typeof(StorageTaskView)));
             Pages.Add(new SmartWMSPage("Toplama", typeof(PickingView)));
@@ -135,7 +138,11 @@ namespace SmartWMS
 
             BindingContext = this;
 
-            ListAllStorageLocations();
+            //ListAllStorageLocations();
+
+
+            Detail = new NavigationPage(new TrolleyTourView());
+            IsPresented = false;
 
         }
 
@@ -161,7 +168,9 @@ namespace SmartWMS
 
         private void SmartWMSPageList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if(SelectedPage.ViewName.Equals("Ürün Alım"))
+            if (SelectedPage.ViewName.Equals("Tablolar"))
+                Detail = new NavigationPage(new TablesView());
+            else if (SelectedPage.ViewName.Equals("Ürün Alım"))
                 Detail = new NavigationPage(new GoodsReceiptView());
             else if(SelectedPage.ViewName.Equals("Depolama Görevleri"))
                 Detail = new NavigationPage(new StorageTaskView());
@@ -202,27 +211,30 @@ namespace SmartWMS
             switch (index)
             {
                 case 0:
-                    Detail = new NavigationPage(new GoodsReceiptView());
+                    Detail = new NavigationPage(new TablesView());
                     break;
                 case 1:
-                    Detail = new NavigationPage(new StorageTaskView());
+                    Detail = new NavigationPage(new GoodsReceiptView());
                     break;
                 case 2:
-                    Detail = new NavigationPage(new PickingView());
+                    Detail = new NavigationPage(new StorageTaskView());
                     break;
                 case 3:
-                    Detail = new NavigationPage(new TrolleyTourView());
+                    Detail = new NavigationPage(new PickingView());
                     break;
                 case 4:
-                    Detail = new NavigationPage(new LoadingView());
+                    Detail = new NavigationPage(new TrolleyTourView());
                     break;
                 case 5:
-                    Detail = new NavigationPage(new DispatchingView());
+                    Detail = new NavigationPage(new LoadingView());
                     break;
                 case 6:
-                    Detail = new NavigationPage(new StockOperationsView());
+                    Detail = new NavigationPage(new DispatchingView());
                     break;
                 case 7:
+                    Detail = new NavigationPage(new StockOperationsView());
+                    break;
+                case 8:
                     Detail = new NavigationPage(new CycleCountView());
                     break;
 
@@ -257,12 +269,13 @@ namespace SmartWMS
             }
         }
 
+        /*
         private void LocationList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             StorageLocationDetailView view = new StorageLocationDetailView(SelectedLocation);
             Navigation.PushAsync(view);
 
-        }
+        }*/
     }
 
 }

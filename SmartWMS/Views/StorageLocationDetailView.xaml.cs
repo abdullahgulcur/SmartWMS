@@ -31,7 +31,7 @@ namespace SmartWMS.Views
 
         public StorageLocationDetailView(StorageLocation location)
         {
-            Items = location.Items;
+            //Items = location.Items;
             InitializeComponent();
             BindingContext = this;
         }

@@ -84,6 +84,7 @@
                 <ContentPage Title="Tables">
                     <ContentPage.Content>
                         <StackLayout>
+                            
                             <!-- 
                             <Button x:Name="start" Text="Start" Clicked="start_Clicked"/>
                             <Label x:Name="recon" Text="Recognized text" HorizontalOptions="Center" VerticalOptions="Center" />
@@ -94,7 +95,7 @@
                             -->
                             
 
-                            <!-- THIS PART IS FOR STORAGE LOCATION TABLE -->
+                            <!-- THIS PART IS FOR STORAGE LOCATION TABLE 
 
                             <Label Text="STORAGE LOCATIONS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
 
@@ -119,7 +120,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-
+-->
 
                             <!-- THIS PART IS FOR ITEM TABLE 
 

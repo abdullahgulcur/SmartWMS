@@ -14,6 +14,7 @@ namespace SmartWMS.Repository
             var connection = DependencyService.Get<ISQLite>().GetConnection();
             connection.CreateTable<StorageLocation>();
             connection.CreateTable<Item>();
+            connection.CreateTable<Stock>();
             return connection;
         }
     }

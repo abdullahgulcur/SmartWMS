@@ -12,16 +12,12 @@ namespace SmartWMS.Models
         public string ItemBarcode { get; set; }
         public string ItemName { get; set; }
 
-        [ForeignKey(typeof(StorageLocation))]
-        public int StorageLocationId { get; set; }
-
-        [ManyToOne] 
-        public StorageLocation StorageLocation { get; set; }
-
+        /*
         public override string ToString()
         {
             return ItemId + " " + ItemBarcode + " " + ItemName;
         }
+        */
     }
 }
 
