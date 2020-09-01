@@ -45,10 +45,10 @@ namespace SmartWMS.Droid
                     voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
 
 
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Speak now");
+                    voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Şimdi Konusabilirsiniz");
 
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 3000);
+                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);
                     voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
                     voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
                     voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);

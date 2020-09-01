@@ -62,10 +62,8 @@ namespace SmartWMS.OperationViews
                 OnPropertyChanged(nameof(Items));
             }
         }
-
         
         private List<Models.Stock> stockUnits;
-
         public List<Models.Stock> StockUnits
         {
             get => stockUnits;
@@ -76,7 +74,6 @@ namespace SmartWMS.OperationViews
             }
         }
         
-
         #endregion
 
         public TablesView()
@@ -85,7 +82,6 @@ namespace SmartWMS.OperationViews
 
             Task.Run(async () => { await SetStocks(); }).Wait();
 
-            //SetStocks();
             InitializeComponent();
             BindingContext = this;
         }
@@ -111,10 +107,6 @@ namespace SmartWMS.OperationViews
 
                 Stocks.Add(new Stock(stock.StockId, itemBarcode, locationBarcode, stock.Count));
             }
-
-            //List<Item> items1 = await App.StockManagementDB.GetItemsAsync();
-            //List<StorageLocation> locations1 = await App.StockManagementDB.GetStorageLocationsAsync();
-            //List<Models.Stock> stockUnits1 = await App.StockManagementDB.GetStockUnitsAsync();
         }
 
         private async Task<string> GetItemBarcodeAsync(int itemId)

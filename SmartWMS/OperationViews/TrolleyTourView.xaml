@@ -35,7 +35,7 @@
             <Label Text="ID" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="1" />
             <Label Text="ITEM BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="1" />
             <Label Text="LOCATION BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="2" Grid.Row="1" />
-            <Label Text="COUNT" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="1" />
+            <Label Text="AMOUNT" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="1" />
 
 
             <ListView ItemsSource="{Binding Stocks}" RowHeight="30" Grid.ColumnSpan="4" Grid.Row="2" >
@@ -65,7 +65,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!--
             <Button x:Name="PickButton" Text="START PICKING" Clicked="PickButton_Clicked" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="4"/>
+            
             
             <Label x:Name="LabelId" Text="ID" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="4" IsVisible="False" />
             <Label x:Name="LabelItemBarcode" Text="ITEM BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="4" IsVisible="False"  />
@@ -77,6 +79,17 @@
             <Label x:Name="LabelCurrentStockLocationBarcode" Text="{Binding CurrentStockLocationBarcode}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="2" Grid.Row="5" IsVisible="False"/>
             <Label x:Name="LabelCurrentStockCount" Text="{Binding CurrentStockCount}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="3" Grid.Row="5" IsVisible="False"/>
 
+            -->
+            <Button x:Name="PickButton" Text="START PICKING" Clicked="PickButton_Clicked" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="4"/>
+
+            <!-- 
+            <Label x:Name="GoLocationLabel" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="3" FontSize="12" VerticalOptions="Center" Grid.Column="1" FontAttributes="Bold" />
+            
+            -->
+
+            <!--
+            <Button x:Name="PickBtn" Text="I came..." Grid.Row="7" Grid.ColumnSpan="3" Clicked="PickBtn_Clicked"/>
+            -->
 
             <Image x:Name="ButtonMicrophone" Source="{local:ImageResource SmartWMS.Images.microphone.png}" Grid.Row="7" Grid.Column="3" Margin="8,8,8,8">
                 <Image.GestureRecognizers>

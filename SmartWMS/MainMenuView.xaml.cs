@@ -7,8 +7,6 @@ using SmartWMS.Models;
 using SmartWMS.OperationViews;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SmartWMS.Views;
-using SmartWMS.Repository;
 
 namespace SmartWMS
 {
@@ -17,40 +15,6 @@ namespace SmartWMS
     {
         #region
 
-        /*
-        private List<StorageLocation> storageLocations;
-        public List<StorageLocation> StorageLocations
-        {
-            get => storageLocations;
-            set
-            {
-                storageLocations = value;
-                OnPropertyChanged(nameof(StorageLocations));
-            }
-        }
-
-        private List<Item> items;
-        public List<Item> Items
-        {
-            get => items;
-            set
-            {
-                items = value;
-                OnPropertyChanged(nameof(Items));
-            }
-        }
-
-        private StorageLocation selectedLocation;
-        public StorageLocation SelectedLocation
-        {
-            get => selectedLocation;
-            set
-            {
-                selectedLocation = value;
-                OnPropertyChanged(nameof(SelectedLocation));
-            }
-        }
-        */
         private string username;
         public string Username
         {
@@ -88,16 +52,8 @@ namespace SmartWMS
 
         private ISpeechToText _speechRecongnitionInstance;
 
-        /*
-        private async void ListAllStorageLocations()
-        {
-            StorageLocations = await App.StockManagementDB.GetStorageLocationsAsync();
-            Items = await App.StockManagementDB.GetItemsAsync();
-        }
-        */
         public MainMenuView()
         {
-
             Pages = new List<SmartWMSPage>();
 
             Pages.Add(new SmartWMSPage("Tablolar", typeof(TablesView)));
@@ -121,40 +77,41 @@ namespace SmartWMS
                 //recon.Text = ex.Message;
             }
 
-            MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
-            {
-                SpeechToTextFinalResultRecieved(args);
-            });
+            //MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
+            //{
+            //    if (App.speechView == this.GetType().Name)
+            //    {
+            //        SpeechToTextFinalResultRecieved(args);
 
-            MessagingCenter.Subscribe<ISpeechToText>(this, "Final", (sender) =>
-            {
-                //start.IsEnabled = true;
-            });
+            //    }
+            //});
+
+            //MessagingCenter.Subscribe<ISpeechToText>(this, "Final", (sender) =>
+            //{
+            //    //start.IsEnabled = true;
+            //});
 
             MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
             {
-                SpeechToTextFinalResultRecieved(args);
+                if (App.speechView == this.GetType().Name)
+                {
+                    SpeechToTextFinalResultRecieved(args);
+                }
+                
             });
-
+            
             BindingContext = this;
-
-            //ListAllStorageLocations();
-
 
             Detail = new NavigationPage(new TrolleyTourView());
             IsPresented = false;
 
         }
 
-        /*
-        void Button_Clicked(System.Object sender, System.EventArgs e)
-        {
-            var selectedItem = pages.FirstOrDefault();
-
-            var view = Activator.CreateInstance(selectedItem.OperationView);
-            //GoodsReceiptView view1 = new GoodsReceiptView();
-            Navigation.PushAsync(view as ContentPage);
-        }*/
+        //protected override void OnDisappearing()
+        //{
+        //    MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+        //    base.OnDisappearing();
+        //}
 
         /*
         private void OpenPage(string name)
@@ -244,11 +201,14 @@ namespace SmartWMS
 
         private void start_Clicked(object sender, EventArgs e)
         {
+
             StartRecording();
         }
 
         private void ButtonMicrophone_Clicked(object sender, EventArgs e)
         {
+            App.speechView = this.GetType().Name;
+
             StartRecording();
         }
 
@@ -269,13 +229,6 @@ namespace SmartWMS
             }
         }
 
-        /*
-        private void LocationList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            StorageLocationDetailView view = new StorageLocationDetailView(SelectedLocation);
-            Navigation.PushAsync(view);
-
-        }*/
     }
 
 }

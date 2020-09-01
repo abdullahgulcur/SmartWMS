@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SmartWMS"
+             x:Class="SmartWMS.Views.ItemRequestView">
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="0.47*" />
+                <RowDefinition Height="0.13*" />
+
+
+            </Grid.RowDefinitions>
+
+
+
+            <Frame BorderColor="Gray" CornerRadius="5" Padding="8" Margin="10,10,10,10">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*" />
+                        <ColumnDefinition Width="0.7*" />
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.3*" />
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="0.3*" />
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="0.3*" />
+
+                    </Grid.RowDefinitions>
+
+                    <Label Text="Location:" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" FontAttributes="Bold"  />
+                    <BoxView Color="Gray"  HeightRequest="1" HorizontalOptions="Fill" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,3,0,4"/>
+                    <Label Text="Item:" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" FontAttributes="Bold" Grid.Row="2"/>
+                    <BoxView Color="Gray"  HeightRequest="1" HorizontalOptions="Fill" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,3,0,4"/>
+                    <Label Text="Amount:" FontSize="15" VerticalOptions="Center" HorizontalOptions="End" FontAttributes="Bold" Grid.Row="4"/>
+
+                    <Label Text="{Binding LocationBarcode}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                    <Label Text="{Binding ItemBarcode}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" FontAttributes="Bold" Grid.Row="2" Grid.Column="1"/>
+                    <Label Text="{Binding Count}" FontSize="15" VerticalOptions="Center" HorizontalOptions="Start" FontAttributes="Bold" Grid.Row="4" Grid.Column="1"/>
+
+
+                </Grid>
+
+            </Frame>
+
+            <Frame BorderColor="Gray" CornerRadius="5" Padding="5" Margin="10,10,10,10" Grid.Row="1">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.85*" />
+                        <ColumnDefinition Width="0.15*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+
+                    </Grid.RowDefinitions>
+
+                    <Entry x:Name="UserInputEntry" Text="{Binding UserInput}" Placeholder="Enter Location" FontSize="15" FontAttributes="Bold" Completed="UserInput_Completed"/>
+
+                    <Image x:Name="ButtonKeyboard" Source="{local:ImageResource SmartWMS.Images.icon_keyboard.png}" Grid.Column="1" Margin="8,8,8,8">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Keyboard_Tapped" NumberOfTapsRequired="1"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                </Grid>
+                
+                
+
+            </Frame>
+
+            <!-- 
+            <Frame BorderColor="Gray" Grid.Row="2"
+       CornerRadius="5"
+       Padding="8">
+                <StackLayout>
+                    <Label Text="Card Example"
+           FontSize="Medium"
+           FontAttributes="Bold" />
+                    <BoxView Color="Gray"
+             HeightRequest="2"
+             HorizontalOptions="Fill" />
+                    <Label Text="Frames can wrap more complex layouts to create more complex UI components, such as this card!"/>
+                </StackLayout>
+            </Frame>
+            -->
+
+            <Grid Grid.Row="3" RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="0.2*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="ButtonMicrophone" Source="{local:ImageResource SmartWMS.Images.microphone.png}" Grid.Column="1" Margin="8,8,8,8">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Microphone_Tapped" NumberOfTapsRequired="1"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

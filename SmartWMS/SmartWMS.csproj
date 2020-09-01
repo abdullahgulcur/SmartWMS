@@ -15,8 +15,10 @@
     <None Remove="Images\gradient_1.jpg" />
     <None Remove="Images\icon_forklift.png" />
     <None Remove="Images\icon_forklift_1.png" />
+    <None Remove="Images\icon_keyboard.png" />
     <None Remove="Images\icon_microphone.png" />
     <None Remove="Images\image_logo.png" />
+    <None Remove="Images\keyboard.png" />
     <None Remove="Images\microphone.png" />
   </ItemGroup>
 
@@ -25,8 +27,10 @@
     <EmbeddedResource Include="Images\gradient_1.jpg" />
     <EmbeddedResource Include="Images\icon_forklift.png" />
     <EmbeddedResource Include="Images\icon_forklift_1.png" />
+    <EmbeddedResource Include="Images\icon_keyboard.png" />
     <EmbeddedResource Include="Images\icon_microphone.png" />
     <EmbeddedResource Include="Images\image_logo.png" />
+    <EmbeddedResource Include="Images\keyboard.png" />
     <EmbeddedResource Include="Images\microphone.png" />
   </ItemGroup>
 
@@ -77,10 +81,7 @@
     <EmbeddedResource Update="UserListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UserView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\StorageLocationDetailView.xaml">
+    <EmbeddedResource Update="Views\ItemRequestView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -90,9 +91,6 @@
   <ItemGroup>
     <Compile Update="OperationViews\GoodsReceiptView.xaml.cs">
       <DependentUpon>GoodsReceiptView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\StorageLocationDetailView.xaml.cs">
-      <DependentUpon>StorageLocationDetailView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
