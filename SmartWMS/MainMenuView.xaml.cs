@@ -105,7 +105,7 @@ namespace SmartWMS
             
             BindingContext = this;
 
-            Detail = new NavigationPage(new TrolleyTourView());
+            Detail = new NavigationPage(new MainPageView());
             IsPresented = false;
 
         }
@@ -132,7 +132,9 @@ namespace SmartWMS
 
         private void SmartWMSPageList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (SelectedPage.ViewName.Equals("Tablolar"))
+            if (SelectedPage.ViewName.Equals("Anasayfa"))
+                Detail = new NavigationPage(new MainPageView());
+            else if (SelectedPage.ViewName.Equals("Tablolar"))
                 Detail = new NavigationPage(new TablesView());
             else if (SelectedPage.ViewName.Equals("Ürün Alım"))
                 Detail = new NavigationPage(new GoodsReceiptView());

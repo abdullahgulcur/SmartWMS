@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              x:Class="SmartWMS.OperationViews.MainPageView">
+
+    <StackLayout BackgroundColor="White">
+        <BoxView Color="Transparent" HeightRequest="15"/>
+        <Label Text="WORKFLOW CHART"  TextColor="DeepSkyBlue" HeightRequest="100" FontSize="25" HorizontalOptions="Center"/>
+
+        <forms:ChartView Chart="{Binding PieChart}" HeightRequest="200" />
+        
+    </StackLayout>
 
 </ContentPage>
