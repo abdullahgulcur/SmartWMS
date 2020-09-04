@@ -50,12 +50,13 @@ namespace SmartWMS
 
         #endregion
 
-        //private ISpeechToText _speechRecongnitionInstance;
-        //private bool isMicrophoneOpen = false;
+        private ISpeechToText _speechRecongnitionInstance;
+        private bool isMicrophoneOpen = false;
         public MainMenuView()
         {
             Pages = new List<SmartWMSPage>();
 
+            Pages.Add(new SmartWMSPage("Anasayfa", typeof(MainPageView)));
             Pages.Add(new SmartWMSPage("Tablolar", typeof(TablesView)));
             Pages.Add(new SmartWMSPage("Ürün Alım", typeof(GoodsReceiptView)));
             Pages.Add(new SmartWMSPage("Depolama Görevleri", typeof(StorageTaskView)));
@@ -68,7 +69,7 @@ namespace SmartWMS
 
             InitializeComponent();
 
-            /*
+            
             try
             {
                 _speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
@@ -77,7 +78,7 @@ namespace SmartWMS
             {
                 //recon.Text = ex.Message;
             }
-            */
+            
             //MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
             //{
             //    if (App.speechView == this.GetType().Name)
@@ -91,7 +92,7 @@ namespace SmartWMS
             //{
             //    //start.IsEnabled = true;
             //});
-            /*
+            
             MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
             {
                 if (App.speechView == this.GetType().Name)
@@ -101,7 +102,7 @@ namespace SmartWMS
                 }
                 
             });
-            */
+            
             BindingContext = this;
 
             Detail = new NavigationPage(new TrolleyTourView());
@@ -174,30 +175,33 @@ namespace SmartWMS
             switch (index)
             {
                 case 0:
-                    Detail = new NavigationPage(new TablesView());
+                    Detail = new NavigationPage(new MainPageView());
                     break;
                 case 1:
-                    Detail = new NavigationPage(new GoodsReceiptView());
+                    Detail = new NavigationPage(new TablesView());
                     break;
                 case 2:
-                    Detail = new NavigationPage(new StorageTaskView());
+                    Detail = new NavigationPage(new GoodsReceiptView());
                     break;
                 case 3:
-                    Detail = new NavigationPage(new PickingView());
+                    Detail = new NavigationPage(new StorageTaskView());
                     break;
                 case 4:
-                    Detail = new NavigationPage(new TrolleyTourView());
+                    Detail = new NavigationPage(new PickingView());
                     break;
                 case 5:
-                    Detail = new NavigationPage(new LoadingView());
+                    Detail = new NavigationPage(new TrolleyTourView());
                     break;
                 case 6:
-                    Detail = new NavigationPage(new DispatchingView());
+                    Detail = new NavigationPage(new LoadingView());
                     break;
                 case 7:
-                    Detail = new NavigationPage(new StockOperationsView());
+                    Detail = new NavigationPage(new DispatchingView());
                     break;
                 case 8:
+                    Detail = new NavigationPage(new StockOperationsView());
+                    break;
+                case 9:
                     Detail = new NavigationPage(new CycleCountView());
                     break;
 
@@ -214,13 +218,13 @@ namespace SmartWMS
         
         private void ButtonMicrophone_Clicked(object sender, EventArgs e)
         {
-            /*
+            
             isMicrophoneOpen = true;
             App.speechView = this.GetType().Name;
 
-            StartRecording();*/
+            StartRecording();
         }
-        /*
+        
         private void StartRecording()
         {
             try
@@ -231,12 +235,7 @@ namespace SmartWMS
             {
                 //recon.Text = ex.Message;
             }
-
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                //start.IsEnabled = false;
-            }
-        }*/
+        }
 
     }
 

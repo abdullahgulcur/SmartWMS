@@ -116,7 +116,7 @@ namespace SmartWMS.Views
                 //recon.Text = ex.Message;
             }
 
-            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            MessagingCenter.Instance.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
             {
                 //if (App.speechView == this.GetType().Name)
                 //{
@@ -153,7 +153,7 @@ namespace SmartWMS.Views
 
                 await DisplayAlert("Operation", "Operation is ended", "OK");
                 await Navigation.PopAsync();
-                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
 
             }
 
@@ -219,7 +219,7 @@ namespace SmartWMS.Views
 
                                 await DisplayAlert("Stock Unit", "All Stock units are collected succesfully", "OK");
                                 await Navigation.PopAsync();
-                                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+                                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
 
                             }
                         }
@@ -242,7 +242,7 @@ namespace SmartWMS.Views
         {
             if (!isMicrophoneOpen)
             {
-                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
             }
             base.OnDisappearing();
         }
@@ -351,7 +351,7 @@ namespace SmartWMS.Views
                             {
                                 await DisplayAlert("Stock Unit", "All Stock units are collected succesfully", "OK");
                                 await Navigation.PopAsync();
-                                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+                                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
 
                             }
                         }

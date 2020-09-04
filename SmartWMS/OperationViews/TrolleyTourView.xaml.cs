@@ -119,7 +119,7 @@ namespace SmartWMS.OperationViews
         {
             if (!isMicrophoneOpen)
             {
-                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
+                //MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
             }
 
             base.OnDisappearing();
