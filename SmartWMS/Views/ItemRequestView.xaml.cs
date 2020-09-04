@@ -1,6 +1,8 @@
 ﻿using SmartWMS.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -75,12 +77,26 @@ namespace SmartWMS.Views
             }
         }
 
-        private int currentOperation; // 1: location 2: count
-
-
-        public ItemRequestView(RequestedStock stock)
+        private ObservableCollection<RequestedStock> stocks;
+        public ObservableCollection<RequestedStock> Stocks
         {
-            Stock = stock;
+            get => stocks;
+            set
+            {
+                stocks = value;
+                OnPropertyChanged(nameof(Stocks));
+            }
+        }
+
+        private bool isMicrophoneOpen = false;
+        private int currentOperation; // 1: location 2: count
+        //private int currentIndex = 0;
+
+        public ItemRequestView(ObservableCollection<RequestedStock> stocks)
+        {
+            Stocks = stocks;
+
+            Stock = Stocks[0];
 
             ItemBarcode = Stock.Barcode;
             LocationBarcode = Stock.Location;
@@ -90,6 +106,155 @@ namespace SmartWMS.Views
 
             InitializeComponent();
             BindingContext = this;
+
+            try
+            {
+                _speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
+            }
+            catch (Exception ex)
+            {
+                //recon.Text = ex.Message;
+            }
+
+            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            {
+                //if (App.speechView == this.GetType().Name)
+                //{
+
+                //}
+                isMicrophoneOpen = false;
+                SpeechToTextFinalResultRecieved(args);
+            });
+        }
+
+        private async void SpeechToTextFinalResultRecieved(string UserInput)
+        {
+            UserInput = UserInput.ToUpper(new CultureInfo("tr-TR", false));
+
+            UserInput = UserInput.Replace("BİR", "1");
+            UserInput = UserInput.Replace("İKİ", "2");
+            UserInput = UserInput.Replace("ÜÇ", "3");
+            UserInput = UserInput.Replace("DÖRT", "4");
+            UserInput = UserInput.Replace("BEŞ", "5");
+            UserInput = UserInput.Replace("ALTI", "6");
+            UserInput = UserInput.Replace("YEDİ", "7");
+            UserInput = UserInput.Replace("SEKİZ", "8");
+            UserInput = UserInput.Replace("DOKUZ", "9");
+            UserInput = UserInput.Replace("SIFIR", "0");
+
+            string command = "OPERASYONU BİTİR";
+            bool operationEnded = false;
+
+            if (LevenshteinDistance.Compute(UserInput, command) < command.Length / 3)
+            {
+                operationEnded = true;
+                //UserInputsSucceededEventArgs eventArgs = new UserInputsSucceededEventArgs();
+                //OnUserInputsSucceeded(eventArgs);
+
+                await DisplayAlert("Operation", "Operation is ended", "OK");
+                await Navigation.PopAsync();
+                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+
+            }
+
+            switch (currentOperation)
+            {
+                case 0: // input location barcode
+
+                    if (string.Equals(GetSimpleLocation(UserInput), GetSimpleLocation(Stock.Location)))
+                    {
+                        UserInputEntry.Placeholder = "Enter Item Barcode";
+                        UserInputEntry.Text = "";
+                        currentOperation = 1;
+                    }
+                    else
+                    {
+                        if(!operationEnded)
+                            await DisplayAlert("Location Barcode", "You entered invalid location barcode.", "OK");
+                    }
+
+                    break;
+                case 1: // input item barcode
+
+                    if (GetSimpleItem(UserInput).Equals(GetSimpleItem(Stock.Barcode)))
+                    {
+                        UserInputEntry.Placeholder = "Enter Amount";
+                        UserInputEntry.Text = "";
+                        currentOperation = 2;
+                    }
+                    else
+                    {
+                        if (!operationEnded)
+                            await DisplayAlert("Item Barcode", "You entered invalid item barcode.", "OK");
+                    }
+
+                    break;
+                case 2: // input amount
+
+                    if (!IsEmptyAmountString(UserInput))
+                    {
+                        if (Stock.Count >= GetSimpleAmount(UserInput))
+                        {
+                            UserInputEntry.Text = "";
+
+                            
+
+                            UserInputEntry.Placeholder = "Enter Location";
+
+                            Stocks.Remove(Stocks[0]);
+
+                            if(Stocks.Count != 0)
+                                Stock = Stocks[0];
+
+                            currentOperation = 0;
+
+                            UpdateRequestedItemProperties();
+
+                            await DisplayAlert("Stock Unit", "Stock unit is collected succesfully", "OK");
+                            
+                            if(Stocks.Count == 0)
+                            {
+                                UserInputsSucceededEventArgs eventArgs = new UserInputsSucceededEventArgs();
+                                OnUserInputsSucceeded(eventArgs);
+
+                                await DisplayAlert("Stock Unit", "All Stock units are collected succesfully", "OK");
+                                await Navigation.PopAsync();
+                                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+
+                            }
+                        }
+                        else
+                        {
+                            await DisplayAlert("Item Amount", "Please enter no more than existing amount", "OK");
+                        }
+                    }
+                    else
+                    {
+                        if (!operationEnded)
+                            await DisplayAlert("Invalid Input", "You entered invalid amount", "OK");
+                    }
+
+                    break;
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            if (!isMicrophoneOpen)
+            {
+                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+            }
+            base.OnDisappearing();
+        }
+
+        private void UpdateRequestedItemProperties()
+        {
+            if(Stocks.Count != 0)
+            {
+                ItemBarcode = Stock.Barcode;
+                LocationBarcode = Stock.Location;
+                Count = Stock.Count;
+            }
         }
 
         private void Keyboard_Tapped(object sender, EventArgs e)
@@ -99,18 +264,29 @@ namespace SmartWMS.Views
 
         private void Microphone_Tapped(object sender, EventArgs e)
         {
-
+            isMicrophoneOpen = true;
+            StartRecording();
         }
 
         private void UserInput_Completed(object sender, EventArgs e)
         {
-            //Task.Run(async () => { await UserInput_CompletedAsync(); }).Wait();
-
             UserInput_CompletedAsync();
         }
 
         private async void UserInput_CompletedAsync()
         {
+            UserInput = UserInput.ToUpper(new CultureInfo("tr-TR", false));
+
+            UserInput = UserInput.Replace("BİR", "1");
+            UserInput = UserInput.Replace("İKİ", "2");
+            UserInput = UserInput.Replace("ÜÇ", "3");
+            UserInput = UserInput.Replace("DÖRT", "4");
+            UserInput = UserInput.Replace("BEŞ", "5");
+            UserInput = UserInput.Replace("ALTI", "6");
+            UserInput = UserInput.Replace("YEDİ", "7");
+            UserInput = UserInput.Replace("SEKİZ", "8");
+            UserInput = UserInput.Replace("DOKUZ", "9");
+            UserInput = UserInput.Replace("SIFIR", "0");
 
             switch (currentOperation)
             {
@@ -126,8 +302,6 @@ namespace SmartWMS.Views
                     else
                     {
                         await DisplayAlert("Location Barcode", "You entered invalid location barcode.", "OK");
-
-                        // alert msg
                     }
 
                     break;
@@ -145,33 +319,51 @@ namespace SmartWMS.Views
                     else
                     {
                         await DisplayAlert("Item Barcode", "You entered invalid item barcode.", "OK");
-
-                        // alert msg
                     }
 
                     break;
                 case 2: // input amount
 
-                    if (Stock.Count >= GetSimpleAmount(UserInput))
+                    if (!IsEmptyAmountString(UserInput))
                     {
-                        Stock.Count = Stock.Count - GetSimpleAmount(UserInput);
-                        UserInputEntry.Text = "";
+                        if (Stock.Count >= GetSimpleAmount(UserInput))
+                        {
+                            UserInputEntry.Text = "";
 
-                        UserInputsSucceededEventArgs eventArgs = new UserInputsSucceededEventArgs();
-                        eventArgs.Amount = Stock.Count;
-                        OnUserInputsSucceeded(eventArgs);
+                            UserInputsSucceededEventArgs eventArgs = new UserInputsSucceededEventArgs();
+                            OnUserInputsSucceeded(eventArgs);
 
-                        // alert msg
+                            UserInputEntry.Placeholder = "Enter Location";
 
-                        await DisplayAlert("Stock Unit", "Stock unit is collected succesfully", "OK");
 
-                        await Navigation.PopAsync();
+                            Stocks.Remove(Stocks[0]);
+
+                            if (Stocks.Count != 0)
+                                Stock = Stocks[0];
+
+                            currentOperation = 0;
+
+                            UpdateRequestedItemProperties();
+
+                            await DisplayAlert("Stock Unit", "Stock unit is collected succesfully", "OK");
+
+                            if (Stocks.Count == 0)
+                            {
+                                await DisplayAlert("Stock Unit", "All Stock units are collected succesfully", "OK");
+                                await Navigation.PopAsync();
+                                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+
+                            }
+                        }
+                        else
+                        {
+                            await DisplayAlert("Item Amount", "Please enter no more than existing amount", "OK");
+
+                        }
                     }
                     else
                     {
-                        await DisplayAlert("Item Amount", "Please enter no more than existing amount", "OK");
-
-                        // alert msg
+                        await DisplayAlert("Invalid Input", "You entered invalid amount", "OK");
                     }
 
                     break;
@@ -179,6 +371,7 @@ namespace SmartWMS.Views
 
         }
 
+        
         public event EventHandler<UserInputsSucceededEventArgs> UserInputsSucceeded;
 
         private void OnUserInputsSucceeded(UserInputsSucceededEventArgs e)
@@ -189,8 +382,6 @@ namespace SmartWMS.Views
                 handler(this, e);
             }
         }
-
-        
 
         private string GetSimpleLocation(string locationUserInput)
         {
@@ -206,16 +397,42 @@ namespace SmartWMS.Views
             return itemUserInput;
         }
 
+        private bool IsEmptyAmountString(string amountUserInput)
+        {
+            Regex rgx = new Regex("[^0-9]");
+            amountUserInput = rgx.Replace(amountUserInput, "");
+
+            if (String.IsNullOrEmpty(amountUserInput))
+                return true;
+            else
+                return false;
+        }
+
         private int GetSimpleAmount(string amountUserInput)
         {
             Regex rgx = new Regex("[^0-9]");
             amountUserInput = rgx.Replace(amountUserInput, "");
             return int.Parse(amountUserInput);
         }
-
+        
         public class UserInputsSucceededEventArgs : EventArgs
         {
-            public int Amount { get; set; }
+        }
+        
+        private ISpeechToText _speechRecongnitionInstance;
+
+
+        private void StartRecording()
+        {
+            try
+            {
+                _speechRecongnitionInstance.StartSpeechToText();
+            }
+            catch (Exception ex)
+            {
+                //recon.Text = ex.Message;
+            }
+
         }
     }
 }

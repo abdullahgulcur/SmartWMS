@@ -50,8 +50,8 @@ namespace SmartWMS
 
         #endregion
 
-        private ISpeechToText _speechRecongnitionInstance;
-
+        //private ISpeechToText _speechRecongnitionInstance;
+        //private bool isMicrophoneOpen = false;
         public MainMenuView()
         {
             Pages = new List<SmartWMSPage>();
@@ -68,6 +68,7 @@ namespace SmartWMS
 
             InitializeComponent();
 
+            /*
             try
             {
                 _speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
@@ -76,7 +77,7 @@ namespace SmartWMS
             {
                 //recon.Text = ex.Message;
             }
-
+            */
             //MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
             //{
             //    if (App.speechView == this.GetType().Name)
@@ -90,28 +91,33 @@ namespace SmartWMS
             //{
             //    //start.IsEnabled = true;
             //});
-
+            /*
             MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
             {
                 if (App.speechView == this.GetType().Name)
                 {
+                    isMicrophoneOpen = false;
                     SpeechToTextFinalResultRecieved(args);
                 }
                 
             });
-            
+            */
             BindingContext = this;
 
             Detail = new NavigationPage(new TrolleyTourView());
             IsPresented = false;
 
         }
+        /*
+        protected override void OnDisappearing()
+        {
+            if (!isMicrophoneOpen)
+            {
+                MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+            }
+            base.OnDisappearing();
 
-        //protected override void OnDisappearing()
-        //{
-        //    MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
-        //    base.OnDisappearing();
-        //}
+        }*/
 
         /*
         private void OpenPage(string name)
@@ -196,22 +202,25 @@ namespace SmartWMS
                     break;
 
             }
+
             IsPresented = false;
         }
 
         private void start_Clicked(object sender, EventArgs e)
         {
 
-            StartRecording();
+            //StartRecording();
         }
-
+        
         private void ButtonMicrophone_Clicked(object sender, EventArgs e)
         {
+            /*
+            isMicrophoneOpen = true;
             App.speechView = this.GetType().Name;
 
-            StartRecording();
+            StartRecording();*/
         }
-
+        /*
         private void StartRecording()
         {
             try
@@ -227,7 +236,7 @@ namespace SmartWMS
             {
                 //start.IsEnabled = false;
             }
-        }
+        }*/
 
     }
 

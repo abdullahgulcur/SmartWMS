@@ -30,12 +30,12 @@
                 <Label Text="STOCK UNITS" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="15" Grid.ColumnSpan="4" />
                 -->
 
-            <Button x:Name="RequestItemsButton" Text="REQUEST STOCK UNITS" Clicked="RequestItemsButton_Clicked" Grid.Row="0" Grid.ColumnSpan="4"/>
+            <Button x:Name="RequestItemsButton" BackgroundColor="DeepSkyBlue" Margin="3,3,3,3" TextColor="White" CornerRadius="5" Text="REQUEST STOCK UNITS" Clicked="RequestItemsButton_Clicked" Grid.Row="0" Grid.ColumnSpan="4"/>
 
-            <Label Text="ID" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="1" />
-            <Label Text="ITEM BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="1" />
-            <Label Text="LOCATION BARCODE" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="2" Grid.Row="1" />
-            <Label Text="AMOUNT" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="1" />
+            <Label Text="ID" TextColor="DeepSkyBlue" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="0" Grid.Row="1" />
+            <Label Text="ITEM BARCODE" TextColor="DeepSkyBlue" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="1" Grid.Row="1" />
+            <Label Text="LOCATION BARCODE" TextColor="DeepSkyBlue" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="2" Grid.Row="1" />
+            <Label Text="AMOUNT" TextColor="DeepSkyBlue" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="12" Grid.Column="3" Grid.Row="1" />
 
 
             <ListView ItemsSource="{Binding Stocks}" RowHeight="30" Grid.ColumnSpan="4" Grid.Row="2" >
@@ -80,7 +80,7 @@
             <Label x:Name="LabelCurrentStockCount" Text="{Binding CurrentStockCount}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="12" Grid.Column="3" Grid.Row="5" IsVisible="False"/>
 
             -->
-            <Button x:Name="PickButton" Text="START PICKING" Clicked="PickButton_Clicked" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="4"/>
+            <Button x:Name="PickButton" BackgroundColor="DeepSkyBlue" Margin="3,3,3,3" TextColor="White" CornerRadius="5" Text="START PICKING" Clicked="PickButton_Clicked" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="4"/>
 
             <!-- 
             <Label x:Name="GoLocationLabel" IsVisible="False" Grid.Row="3" Grid.ColumnSpan="3" FontSize="12" VerticalOptions="Center" Grid.Column="1" FontAttributes="Bold" />

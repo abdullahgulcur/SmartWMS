@@ -3,9 +3,6 @@ using SmartWMS.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -89,13 +86,14 @@ namespace SmartWMS.OperationViews
         #endregion
 
         private ISpeechToText _speechRecongnitionInstance;
-        private int currentOperation; // 1: location 2: count
         private int stockIndex = 0;
+        private bool isMicrophoneOpen = false;
 
         public TrolleyTourView()
         {
             InitializeComponent();
 
+            
             try
             {
                 _speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
@@ -104,59 +102,39 @@ namespace SmartWMS.OperationViews
             {
                 //recon.Text = ex.Message;
             }
-        
-            BindingContext = this;
-        }
-
-        protected override void OnAppearing()
-        {
-            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            
+            MessagingCenter.Instance.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
             {
                 if (App.speechView == this.GetType().Name)
                 {
+                    isMicrophoneOpen = false;
                     SpeechToTextFinalResultRecieved(args);
                 }
-
             });
 
-            base.OnAppearing();
+            BindingContext = this;
         }
 
         protected override void OnDisappearing()
         {
-            //MessagingCenter.Unsubscribe<IMessageSender, string>(this, "STT");
+            if (!isMicrophoneOpen)
+            {
+                MessagingCenter.Instance.Unsubscribe<IMessageSender, string>(this, "STT");
+            }
+
             base.OnDisappearing();
         }
 
         private void SpeechToTextFinalResultRecieved(string args)
         {
-            //recon.Text = args;
 
-            /*
-            Stock stock = Stocks[stockIndex];
+            string text = "Başla";
 
-            // if current operation is going location
-            if(currentOperation == 0)
+            if (LevenshteinDistance.Compute(args, text) < text.Length / 2)
             {
-                if (GetSimpleLocation(args).Equals(GetSimpleLocation(stock.Location)))
-                {
-                    GoLocationLabel.Text = "PICK " + stock.Count + " OF ITEM " + stock.Barcode;
-                    currentOperation = 1;
-                }
+                PickItems();
             }
-            else // current operation is picking
-            {
-                if(stock.Count >= GetSimpleAmount(args))
-                {
-                    stock.Count = stock.Count - GetSimpleAmount(args);
 
-                    GoLocationLabel.Text = "GO TO LOCATION " + stock.Location;
-                    stockIndex++;
-                    currentOperation = 0;
-                }
-
-            }
-            */
         }
 
         private async Task RequestItemsRandomly(int itemCount)
@@ -202,73 +180,14 @@ namespace SmartWMS.OperationViews
             }
         }
 
-        /*
-        private async Task<Item> GetItemId(string itemBarcode)
-        {
-            Item item = await App.StockManagementDB.ReadItemBarcodeAsync(itemBarcode);
-            return item;
-        }*/
-
-        private string GetSimpleLocation(string locationUserInput)
-        {
-            Regex rgx = new Regex("[^a-zA-Z1-9]");
-            locationUserInput = rgx.Replace(locationUserInput, "");
-            return locationUserInput;
-        }
-
-        private int GetSimpleAmount(string amountUserInput)
-        {
-            Regex rgx = new Regex("[^0-9]");
-            amountUserInput = rgx.Replace(amountUserInput, "");
-            return int.Parse(amountUserInput);
-        }
-
         private void RequestItemsButton_Clicked(object sender, EventArgs e)
         {
-            currentOperation = 0;
-
-            Task.Run(async () => { await RequestItemsRandomly(10); }).Wait();
+            Task.Run(async () => { await RequestItemsRandomly(3); }).Wait();
 
             RequestedStock stock = Stocks[stockIndex];
 
             PickButton.IsVisible = true;
-            //Stocks.Remove(stock);
-
-            /*
-            GoLocationLabel.IsVisible = true;
-            GoLocationLabel.Text = "GO TO LOCATION " + stock.Location;
-            */
-
-            /*
-            PickButton.IsVisible = true;
-            LabelItemBarcode.IsVisible = true;
-            LabelLocationBarcode.IsVisible = true;
-            LabelId.IsVisible = true;
-            LabelCount.IsVisible = true;
-            */
-
         }
-
-        /*
-        public async Task SetStocks()
-        {
-            List<Models.Stock> stockUnits = await App.StockManagementDB.GetStockUnitsAsync();
-
-            Stocks = new ObservableCollection<Stock>();
-
-            foreach (Models.Stock stock in stockUnits)
-            {
-                string itemBarcode = await GetItemBarcodeAsync(stock.ItemId);
-                string locationBarcode = await GetLocationBarcodeAsync(stock.StorageLocationId);
-
-
-                Stocks.Add(new Stock(stock.StockId, itemBarcode, locationBarcode, stock.Count));
-            }
-
-            //List<Item> items1 = await App.StockManagementDB.GetItemsAsync();
-            //List<StorageLocation> locations1 = await App.StockManagementDB.GetStorageLocationsAsync();
-            //List<Models.Stock> stockUnits1 = await App.StockManagementDB.GetStockUnitsAsync();
-        }*/
 
         private async Task<string> GetItemBarcodeAsync(int itemId)
         {
@@ -282,29 +201,14 @@ namespace SmartWMS.OperationViews
             return location.StorageLocationBarcode;
         }
 
-        /*
-        private void PickButton_Clicked(object sender, EventArgs e)
-        {
-            Stock stock = Stocks[0];
-            Stocks.Remove(stock);
-            
-            LabelCurrentStockId.IsVisible = true;
-            LabelCurrentStockItemBarcode.IsVisible = true;
-            LabelCurrentStockLocationBarcode.IsVisible = true;
-            LabelCurrentStockCount.IsVisible = true;
-            
-            CurrentStockId = stock.Id;
-            CurrentStockItemBarcode = stock.Barcode;
-            CurrentStockLocationBarcode = stock.Location;
-            CurrentStockCount = stock.Count;
-        }*/
-
         private void Microphone_Tapped(object sender, EventArgs e)
         {
+            isMicrophoneOpen = true;
+
             App.speechView = this.GetType().Name;
             StartRecording();
         }
-
+        
         private void StartRecording()
         {
             try
@@ -315,24 +219,32 @@ namespace SmartWMS.OperationViews
             {
                 //recon.Text = ex.Message;
             }
-
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                //start.IsEnabled = false;
-            }
         }
-
+        
+        
         private void HandleInputsSucceeded(object sender, UserInputsSucceededEventArgs e)
         {
-            Stocks[stockIndex].Count = e.Amount;
-            stockIndex++;
+            PickButton.IsVisible = false;
         }
 
         private void PickButton_Clicked(object sender, EventArgs e)
         {
-            ItemRequestView view = new ItemRequestView(Stocks[stockIndex]);
-            view.UserInputsSucceeded += HandleInputsSucceeded;
-            Navigation.PushAsync(view);
+            PickItems();
+        }
+
+        private void PickItems()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if(Stocks == null)
+                    await DisplayAlert("Empty Stock Unit", "Stock unit table is empty", "OK");
+                else
+                {
+                    ItemRequestView view = new ItemRequestView(Stocks);
+                    view.UserInputsSucceeded += HandleInputsSucceeded;
+                    await Navigation.PushAsync(view);
+                }
+            });
         }
     }
 }
